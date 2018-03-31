@@ -16,6 +16,8 @@ def	UploadFile(file_src,token):
 	dbx = dropbox.dropbox.Dropbox(token)
 	with open(file_src,'rb') as f:
 		dbx.files_upload(f.read(),file_dst)
+	if isinstance(result,dropbox.files.FileMetadata):
+		print file_src+" upload success"
 
 def	main():
 	token_file = open('token.txt',"r+")
