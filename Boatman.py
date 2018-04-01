@@ -47,23 +47,28 @@ def	UploadFile(file_src):
 		print file_src+" upload success"
 
 def	main():
-	file_list = GetFileList(sys.argv[2])
-	#UploadFile(sys.argv[2])
-	for i in range(int(sys.argv[3])):
-		t = ThreadUpload(queue)
-		t.setDaemon(True)
-		t.start()
-	for file in file_list:
-		queue.put(file)
-	queue.join()
+	if sys.argv[1] == 'upload':
+		UploadFile(sys.argv[2])
+	elif sys.argv[1] == 'updir':
+		file_list = GetFileList(sys.argv[2])
+		for i in range(int(sys.argv[3])):
+			t = ThreadUpload(queue)
+			t.setDaemon(True)
+			t.start()
+		for file in file_list:
+			queue.put(file)
+		queue.join()
+	else:
+		exit('Only Support upload and updir')
 	
 if	__name__=="__main__":
 	if len(sys.argv)<3:
 		print '''
 example:
-Upload.py upload filepath
+upload.py upload filepath
+upload.py updir folderpath threads
 upload.py upload c:\\\\xxx\\\\xx\\\\1.txt
-upload.py updir c:\\\\xxx\\\\xxxx threads
+upload.py updir c:\\\\xxx\\\\xxxx 5
 		'''
 		exit()
 	else:
